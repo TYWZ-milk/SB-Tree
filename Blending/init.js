@@ -33,7 +33,6 @@ function init() {
 
     initScene();
     initObject();
-    //readFile();
     animate();
 }
 
