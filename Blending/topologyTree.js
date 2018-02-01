@@ -3,6 +3,7 @@
  */
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
 var topotree1,topotree2;//树1 和树2 的拓扑结构
+var tree = [];
 var branch;
 function Node(data) {
     this.data = data;
@@ -19,9 +20,17 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    blending();
-    compact();
-    drawTree();
+    for(var i=-3;i<4;i++) {
+        tree = [];
+        blendtree = [];
+        blending();
+        compact();
+        drawTree();
+        ptree1 = blendtree;
+        for(var j=0;j<tree.length;j++){
+            tree[j].position.x=i*500;
+        }
+    }
 }
 //后层拓扑结构处理
 function nextLayer(){
@@ -179,6 +188,7 @@ function drawTree(){
         for(var j=0;j<blendtree[i].length;j++) {
             drawBranch(blendtree[i][j]);
             scene.add(branch);
+            tree.push(branch);
         }
     }
 }

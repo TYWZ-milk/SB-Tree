@@ -44,7 +44,7 @@ function initObject(){
             }
         });
         geometry.scale.set(100, 100, 100);
-        geometry.translateX(500);
+        geometry.translateX(2000);
         scene.add(geometry);
     });
 
@@ -58,7 +58,7 @@ function initObject(){
             }
         });
         geometry.scale.set(100, 100, 100);
-        geometry.translateX(-500);
+        geometry.translateX(-2000);
         scene.add(geometry);
     });
 
