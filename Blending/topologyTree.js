@@ -20,7 +20,7 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=-3;i<4;i++) {
+    for(var i=-3;i<0;i++) {
         tree = [];
         blendtree = [];
         blending();
@@ -71,7 +71,19 @@ function addZero(tree1,tree2){
         var interval;
         var dvalue;
         layer = [];
-        if(tree1[i].length > tree2[i].length){
+        if(i>=tree1.length){
+            for(var j=0;j<tree2[i].length;j++){
+                layer[j]='0';
+            }
+            ptree1.push(layer);
+        }
+        else if(i>=tree2.length){
+            for(var j=0;j<tree1[i].length;j++){
+                layer[j]='0';
+            }
+            ptree2.push(layer);
+        }
+        else if(tree1[i].length > tree2[i].length){
             interval = parseInt(tree1[i].length/tree2[i].length)+1;
             dvalue = parseInt(tree1[i].length - tree2[i].length);
             for(var j= 0,n=0; j<tree1[i].length; j++){
@@ -134,7 +146,7 @@ function blendBranch(trunk1,trunk2){
             trunk2.push(trunk2[trunk2.length-1]);
         }
     }
-    else{
+    else if(trunk2!="0" && trunk1!="0" && trunk1.length < trunk2.length){
         var length = trunk2.length - trunk1.length;
         for(var j=0;j<length;j++){
             trunk1.push(trunk1[trunk1.length-1]);

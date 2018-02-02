@@ -49,7 +49,7 @@ function initObject(){
     });
 
     loader=new THREE.OBJLoader();
-    loader.load('../models/Blue Spruce.obj', function(geometry) {
+    loader.load('../models/BS07a.obj', function(geometry) {
         geometry.traverse(function (child) {
             if(child instanceof THREE.Mesh){
                 child.material.depthTest = false;
@@ -73,7 +73,7 @@ function readFile(){
 //load a text file a output the result to the console
     loaderTree1.load(
         // resource URL
-        '../models/Blue Spruce.txtskl',
+        '../models/BS07a.txtskl',
 
         // Function when resource is loaded
         function ( data ) {
