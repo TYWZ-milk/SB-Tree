@@ -1,9 +1,9 @@
 /**
  * Created by deii66 on 2018/1/30.
  */
-var scene,canvas,width,height,renderer,camera,Orbitcontrols;
+var scene,canvas,width,height,renderer,camera,Orbitcontrols,lbbs;
 function init() {
-
+    lbbs = new LBBs();
     canvas = document.getElementById("canvas");
     width = window.innerWidth;
     height = window.innerHeight;
@@ -45,5 +45,6 @@ function animate() {
     Orbitcontrols.update();
     renderer.clear();
     renderer.render(scene,camera);
+    lbbs.update();
     requestAnimationFrame(animate);
 }

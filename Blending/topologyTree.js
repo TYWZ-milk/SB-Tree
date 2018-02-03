@@ -20,7 +20,7 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=-3;i<0;i++) {
+    for(var i=-1;i<2;i++) {
         tree = [];
         blendtree = [];
         blending();
