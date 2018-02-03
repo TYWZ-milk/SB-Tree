@@ -3,7 +3,7 @@
  */
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
 var topotree1,topotree2;//树1 和树2 的拓扑结构
-var tree = [];
+var tree = [];//一棵树，包含其枝干
 var branch;
 function Node(data) {
     this.data = data;
@@ -62,11 +62,26 @@ function firstLayer(){
         }
     }
 }
-//添加零枝干
+//数据预处理 包括添加零枝干、零枝干层、不同层处理
 function addZero(tree1,tree2){
     var layer = [];
     ptree1 = tree1;
     ptree2 = tree2;
+    if(ptree2.length!=ptree1.length){
+        if(ptree2.length > ptree1.length && ptree2[ptree2.length-2].length < ptree1[ptree1.length-1].length){
+            var interval = parseInt(ptree1[ptree1.length-1].length/ptree2[ptree2.length-2].length);
+            for(var i=0;i<ptree2[ptree2.length-1].length;i++){
+                ptree2[ptree2.length-1][i].child=child*interval;
+            }
+        }
+        if(ptree2.length < ptree1.length && ptree1[ptree1.length-2].length < ptree2[ptree2.length-1].length){
+            var interval = parseInt(ptree2[ptree2.length-1].length/ptree1[ptree1.length-2].length);
+            for(var i=0;i<ptree1[ptree1.length-1].length;i++){
+                for(var j=0;j<ptree1[ptree1.length-1][i].length;j++)
+                    ptree1[ptree1.length-1][i][j].child=parseInt(ptree1[ptree1.length-1][i][j].child)*interval;
+            }
+        }
+    }
     for(var i=0 ; i<tree1.length||i<tree2.length;i++){
         var interval;
         var dvalue;
@@ -140,13 +155,13 @@ function blendBranch(trunk1,trunk2){
     var position;
     var circle;
     var trunk = [];
-    if(trunk2!="0" && trunk1!="0" && trunk1.length > trunk2.length){  //保证两枝干节点信息一样多
+    if(trunk2!="0" && trunk1!="0" &&  trunk1.length > trunk2.length){  //保证两枝干节点信息一样多
         var length = trunk1.length - trunk2.length;
         for(var j=0;j<length;j++){
             trunk2.push(trunk2[trunk2.length-1]);
         }
     }
-    else if(trunk2!="0" && trunk1!="0" && trunk1.length < trunk2.length){
+    else if(trunk2!="0" && trunk1!="0"&&  trunk1.length < trunk2.length){
         var length = trunk2.length - trunk1.length;
         for(var j=0;j<length;j++){
             trunk1.push(trunk1[trunk1.length-1]);
@@ -264,13 +279,12 @@ function drawBranch(trunk) {
 }
 //紧凑化处理
 function compact(){
-    var interval=0;
     for(var i=1;i<blendtree.length;i++){
-        if(i!=1)
-        interval = parseInt(blendtree[i-1].length/parseInt(blendtree[i][blendtree[i].length-1][0].child));
         for(var j=0;j<blendtree[i].length;j++){
-            var child = blendtree[i][j][0].child;
-            var position = blendtree[i][j][0].position;
+            var child = parseInt(blendtree[i][j][0].child);
+            var position = parseInt(blendtree[i][j][0].position);
+            if(position >= blendtree[i-1][child].length)
+                position = blendtree[i-1][child].length-1;
             var x = blendtree[i-1][child][position].pos.x - blendtree[i][j][0].pos.x;
             var y = blendtree[i-1][child][position].pos.y - blendtree[i][j][0].pos.y;
             var z = blendtree[i-1][child][position].pos.z - blendtree[i][j][0].pos.z;
