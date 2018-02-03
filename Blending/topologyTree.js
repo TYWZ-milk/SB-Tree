@@ -264,7 +264,10 @@ function drawBranch(trunk) {
 }
 //紧凑化处理
 function compact(){
+    var interval=0;
     for(var i=1;i<blendtree.length;i++){
+        if(i!=1)
+        interval = parseInt(blendtree[i-1].length/parseInt(blendtree[i][blendtree[i].length-1][0].child));
         for(var j=0;j<blendtree[i].length;j++){
             var child = blendtree[i][j][0].child;
             var position = blendtree[i][j][0].position;
