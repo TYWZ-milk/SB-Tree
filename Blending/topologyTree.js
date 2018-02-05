@@ -3,7 +3,7 @@
  */
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
 var topotree1,topotree2;//树1 和树2 的拓扑结构
-var tree = [];//一棵树，包含其枝干
+var tree;//一棵树，包含其枝干
 var branch;
 function Node(data) {
     this.data = data;
@@ -21,15 +21,14 @@ function topologyTree(tree1,tree2){
     //firstLayer();
     //nextLayer();
     for(var i=-1;i<2;i++) {
-        tree = [];
+        tree = new THREE.Group();
         blendtree = [];
         blending();
         compact();
         drawTree();
         ptree1 = blendtree;
-        for(var j=0;j<tree.length;j++){
-            tree[j].position.x=i*500;
-        }
+        scene.add(tree);
+        tree.position.x=i*500;
     }
 }
 //后层拓扑结构处理
@@ -214,8 +213,8 @@ function drawTree(){
     for(var i=0;i<blendtree.length;i++) {
         for(var j=0;j<blendtree[i].length;j++) {
             drawBranch(blendtree[i][j]);
-            scene.add(branch);
-            tree.push(branch);
+            //scene.add(branch);
+            tree.add(branch);
         }
     }
 }
