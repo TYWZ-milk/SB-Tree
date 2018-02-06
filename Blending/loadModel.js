@@ -1,4 +1,4 @@
-
+var branchImg;
 function loadSky() {
     //add skybox
     var urlPrefix = "../textures/skybox/";
@@ -34,6 +34,7 @@ function loadGround() {
 }
 //初始化树木
 function initObject(){
+    branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/timg.jpg");
     var loader = new THREE.OBJLoader();
     loader.load('../models/AL06a.obj', function(geometry) {
         geometry.traverse(function (child) {
@@ -43,13 +44,13 @@ function initObject(){
                 child.geometry.computeBoundingSphere();
             }
         });
-        geometry.scale.set(100, 100, 100);
+        geometry.scale.set(70, 70, 70);
         geometry.translateX(2000);
         scene.add(geometry);
     });
 
     loader=new THREE.OBJLoader();
-    loader.load('../models/BS07a.obj', function(geometry) {
+    loader.load('../models/Blue Spruce.obj', function(geometry) {
         geometry.traverse(function (child) {
             if(child instanceof THREE.Mesh){
                 child.material.depthTest = false;
@@ -57,7 +58,7 @@ function initObject(){
                 child.geometry.computeBoundingSphere();
             }
         });
-        geometry.scale.set(100, 100, 100);
+        geometry.scale.set(70, 70, 70);
         geometry.translateX(-2000);
         scene.add(geometry);
     });
@@ -73,7 +74,7 @@ function readFile(){
 //load a text file a output the result to the console
     loaderTree1.load(
         // resource URL
-        '../models/BS07a.txtskl',
+        '../models/Blue Spruce.txtskl',
 
         // Function when resource is loaded
         function ( data ) {
@@ -152,10 +153,10 @@ function readFile(){
                 i = j+1;
                 if(branchlength!=0) {
                     circle = {
-                        radius: radius * 100,
+                        radius: radius * 70,
                         position:position,//
                         child:child,
-                        pos: new THREE.Vector3(x * 100, y * 100, z * 100)
+                        pos: new THREE.Vector3(x * 70, y * 70, z * 70)
                     };
                     trunk.push(circle);
                     branchlength--;
@@ -264,10 +265,10 @@ function readFile(){
                 i = j+1;
                 if(branchlength!=0) {
                     circle = {
-                        radius: radius * 100,
+                        radius: radius * 70,
                         position:position,//
                         child:child,
-                        pos: new THREE.Vector3(x * 100, y * 100, z * 100)
+                        pos: new THREE.Vector3(x * 70, y * 70, z * 70)
                     };
                     trunk.push(circle);
                     branchlength--;
