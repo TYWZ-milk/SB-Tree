@@ -25,7 +25,7 @@ function loadGround() {
     var texture2 = THREE.ImageUtils.loadTexture("../textures/terrain/grasslight-big.jpg");
     texture2.wrapS = THREE.RepeatWrapping;
     texture2.wrapT = THREE.RepeatWrapping;
-    texture2.repeat.set(50,50);
+    texture2.repeat.set(100,100);
     var plane = new THREE.PlaneGeometry(5000,5000);
     plane.rotateX(-Math.PI/2);
     return new THREE.Mesh(plane, new THREE.MeshLambertMaterial({
@@ -162,6 +162,7 @@ function readFile(){
                     branchlength--;
                     if(branchlength==0){
                         layer.push(trunk);
+                        reusableSet(trunk);
                         number--;
                         if(number == 0){
                             tree1.push(layer);
@@ -274,6 +275,7 @@ function readFile(){
                     branchlength--;
                     if(branchlength==0){
                         layer.push(trunk);
+                        reusableSet(trunk);
                         number--;
                         if(number == 0){
                             tree2.push(layer);

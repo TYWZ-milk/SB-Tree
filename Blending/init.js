@@ -3,7 +3,7 @@
  */
 var scene,canvas,width,height,renderer,camera,Orbitcontrols,lbbs;
 function init() {
-    lbbs = new LBBs();
+   // lbbs = new LBBs();
     canvas = document.getElementById("canvas");
     width = window.innerWidth;
     height = window.innerHeight;
@@ -26,7 +26,7 @@ function init() {
 
 
     camera = new THREE.PerspectiveCamera(45,width/height,1,10000);
-    camera.position.y = 800;
+    camera.position.y = 1300;
     camera.position.z = 800;
 
     Orbitcontrols = new THREE.OrbitControls( camera, renderer.domElement );
@@ -45,6 +45,6 @@ function animate() {
     Orbitcontrols.update();
     renderer.clear();
     renderer.render(scene,camera);
-    lbbs.update();
+    //lbbs.update();
     requestAnimationFrame(animate);
 }
