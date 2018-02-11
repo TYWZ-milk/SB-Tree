@@ -20,7 +20,7 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=-4;i<5;i++) {
+    for(var i=-4;i<8;i++) {
         treegeo = new THREE.Geometry();
         blendtree = [];
         blending();
@@ -143,11 +143,11 @@ function blending(){
     var layer = [];
     for(var i=0;i<ptree1.length||i<ptree2.length;i++){
         if(i==0) {
-            layer.push(blendBranch(ptree1[i][0], ptree2[i][0]));
+            layer.push(compare(blendBranch(ptree1[i][0], ptree2[i][0])));
         }
         else{
             for(var j=0; j<ptree1[i].length || j<ptree2[i].length; j++) {
-                layer.push(blendBranch(ptree1[i][j], ptree2[i][j]));
+                layer.push(compare(blendBranch(ptree1[i][j], ptree2[i][j])));
             }
         }
         blendtree.push(layer);
