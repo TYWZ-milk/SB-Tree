@@ -25,12 +25,19 @@ function reusableSet(trunk){
 //将过渡枝干与reusableset中的枝干进行对比
 function compare(trunk){
     var ctrunk = movetoOrigin(trunk);
+    var child = parseInt(trunk[0].child);
+    var position = parseInt(trunk[0].position);
     for(var i=0; i < reusableset.length; i++){
         var sum = 0;
         for(var j=0 ;j<ctrunk.length && j<reusableset[i].length;j++)
             sum+=caculate(ctrunk[j].pos,reusableset[i][j].pos);
-        if(sum <3)
-            return reusableset[i];
+        if(sum <10) {
+            var temp = [];
+            for(var m=0;m<reusableset[i].length;m++){
+                temp.push({child:child,pos:reusableset[i][m].pos,position:position,radius:reusableset[i][m].radius});
+            }
+            return temp;
+        }
     }
     return trunk;
 }

@@ -20,7 +20,7 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=-4;i<8;i++) {
+    for(var i=-4;i<5;i++) {
         treegeo = new THREE.Geometry();
         blendtree = [];
         blending();
