@@ -20,18 +20,14 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=-4;i<5;i++) {
+    for(var i=-4;i<6;i++) {
         treegeo = new THREE.Geometry();
         blendtree = [];
         blending();
         compact();
         drawTree();
         ptree1 = blendtree;
-        var tree = new THREE.Mesh(treegeo,new THREE.MeshLambertMaterial({
-            // wireframe:true,
-            side:THREE.DoubleSide,
-            map:branchImg
-        }));
+        var tree = new THREE.Mesh(treegeo,material);
         scene.add(tree);
         tree.position.x=i*400;
     }

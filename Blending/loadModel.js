@@ -1,4 +1,5 @@
 var branchImg;
+var material;
 function loadSky() {
     //add skybox
     var urlPrefix = "../textures/skybox/";
@@ -35,6 +36,11 @@ function loadGround() {
 //初始化树木
 function initObject(){
     branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/timg.jpg");
+    material = new THREE.MeshLambertMaterial({
+        // wireframe:true,
+        side:THREE.DoubleSide,
+        map:branchImg
+    });
     var loader = new THREE.OBJLoader();
     loader.load('../models/AL06a.obj', function(geometry) {
         geometry.traverse(function (child) {
