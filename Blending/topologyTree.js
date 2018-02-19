@@ -20,7 +20,7 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=-4;i<6;i++) {
+    for(var i=-4;i<0;i++) {
         treegeo = new THREE.Geometry();
         blendtree = [];
         blending();
@@ -29,6 +29,7 @@ function topologyTree(tree1,tree2){
         ptree1 = blendtree;
         var tree = new THREE.Mesh(treegeo,material);
         scene.add(tree);
+        objectGroup.push(tree);
         tree.position.x=i*400;
     }
 }

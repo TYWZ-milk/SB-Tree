@@ -34,7 +34,7 @@ function loadGround() {
     }));
 }
 //初始化树木
-function initObject(){
+function initObject(tree1,tree2){
     branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/timg.jpg");
     material = new THREE.MeshLambertMaterial({
         // wireframe:true,
@@ -42,7 +42,7 @@ function initObject(){
         map:branchImg
     });
     var loader = new THREE.OBJLoader();
-    loader.load('../models/AL06a.obj', function(geometry) {
+    loader.load(tree1, function(geometry) {
         geometry.traverse(function (child) {
             if(child instanceof THREE.Mesh){
                 child.material.depthTest = false;
@@ -53,10 +53,11 @@ function initObject(){
         geometry.scale.set(70, 70, 70);
         geometry.translateX(2000);
         scene.add(geometry);
+        objectGroup.push(geometry);
     });
 
     loader=new THREE.OBJLoader();
-    loader.load('../models/Blue Spruce.obj', function(geometry) {
+    loader.load(tree2, function(geometry) {
         geometry.traverse(function (child) {
             if(child instanceof THREE.Mesh){
                 child.material.depthTest = false;
@@ -67,20 +68,22 @@ function initObject(){
         geometry.scale.set(70, 70, 70);
         geometry.translateX(-2000);
         scene.add(geometry);
+        objectGroup.push(geometry);
     });
-
-    readFile();
+    var txt1 = tree1.substr(0,tree1.length-3) + "txtskl";
+    var txt2 = tree2.substr(0,tree2.length-3) + "txtskl";
+    readFile(txt1,txt2);
 }
 //获取树木模型的枝干信息并转化为层次信息
 var tree1 = [];
 var tree2 = [];
-function readFile(){
+function readFile(txt1,txt2){
     var loaderTree1 = new THREE.FileLoader();
     var loaderTree2 = new THREE.FileLoader();
 //load a text file a output the result to the console
     loaderTree1.load(
         // resource URL
-        '../models/Blue Spruce.txtskl',
+        txt2,
 
         // Function when resource is loaded
         function ( data ) {
@@ -193,7 +196,7 @@ function readFile(){
 
     loaderTree2.load(
         // resource URL
-        '../models/AL06a.txtskl',
+        txt1,
 
         // Function when resource is loaded
         function ( data ) {

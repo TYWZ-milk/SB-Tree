@@ -2,6 +2,7 @@
  * Created by deii66 on 2018/1/30.
  */
 var scene,canvas,width,height,renderer,camera,Orbitcontrols,stats,lbbs;
+var objectGroup=[];
 function init() {
    // lbbs = new LBBs();
     canvas = document.getElementById("canvas");
@@ -32,8 +33,8 @@ function init() {
     Orbitcontrols = new THREE.OrbitControls( camera, renderer.domElement );
 
     initStats();
+    initGui();
     initScene();
-    initObject();
     animate();
 }
 function initStats() {
@@ -50,6 +51,35 @@ function initStats() {
     document.body.appendChild(stats.domElement);
 
     return stats;
+}
+var controls = new function (){
+    this.AL06a = false;
+    this.Blue_Spruce = false;
+    this.Scotch_Pine = false;
+    this.Delete = function(){
+        for(var i=0; i<objectGroup.length;i++)
+            scene.remove(objectGroup[i]);
+        objectGroup = [];
+    };
+    this.Blend = function (){
+        if(this.AL06a == true && this.Blue_Spruce==true){
+            initObject("../models/AL06a.obj","../models/Blue Spruce.obj");
+        }
+        else if(this.AL06a == true && this.Scotch_Pine == true){
+            initObject("../models/AL06a.obj","../models/Scotch Pine.obj");
+        }
+        else if(this.Blue_Spruce == true && this.Scotch_Pine == true){
+            initObject("../models/Blue Spruce.obj","../models/Scotch Pine.obj");
+        }
+    }
+};
+function initGui(){
+    var dataGui = new dat.GUI();
+    dataGui.add(controls,'AL06a');
+    dataGui.add(controls,'Blue_Spruce');
+    dataGui.add(controls,'Scotch_Pine');
+    dataGui.add(controls,'Blend');
+    dataGui.add(controls,'Delete');
 }
 //初始化场景
 function initScene() {

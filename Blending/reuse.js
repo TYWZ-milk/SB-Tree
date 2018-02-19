@@ -31,7 +31,7 @@ function compare(trunk){
         var sum = 0;
         for(var j=0 ;j<ctrunk.length && j<reusableset[i].length;j++)
             sum+=caculate(ctrunk[j].pos,reusableset[i][j].pos);
-        if(sum <10) {
+        if(sum <25) {
             var temp = [];
             for(var m=0;m<reusableset[i].length;m++){
                 temp.push({child:child,pos:reusableset[i][m].pos,position:position,radius:reusableset[i][m].radius});
