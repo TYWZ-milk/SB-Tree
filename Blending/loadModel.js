@@ -307,5 +307,4 @@ function readFile(txt1,txt2){
             console.error( 'An error happened' );
         }
     );
-
 }

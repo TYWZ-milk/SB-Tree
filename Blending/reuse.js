@@ -22,6 +22,7 @@ function movetoOrigin(trunk){
 function reusableSet(trunk){
     reusableset.push(movetoOrigin(trunk));
 }
+var jj=0;
 //将过渡枝干与reusableset中的枝干进行对比
 function compare(trunk){
     var ctrunk = movetoOrigin(trunk);
@@ -31,11 +32,14 @@ function compare(trunk){
         var sum = 0;
         for(var j=0 ;j<ctrunk.length && j<reusableset[i].length;j++)
             sum+=caculate(ctrunk[j].pos,reusableset[i][j].pos);
-        if(sum <25) {
+        if(sum <50) {
             var temp = [];
             for(var m=0;m<reusableset[i].length;m++){
-                temp.push({child:child,pos:reusableset[i][m].pos,position:position,radius:reusableset[i][m].radius});
+                var radius =  parseFloat(reusableset[i][m].radius);
+                var pos = {x:reusableset[i][m].pos.x,y:reusableset[i][m].pos.y,z:reusableset[i][m].pos.z};
+                temp.push({child:child,pos:pos,position:position,radius:radius});
             }
+            jj++;
             return temp;
         }
     }

@@ -20,7 +20,7 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=-4;i<0;i++) {
+    for(var i=0;i<30;i++) {
         treegeo = new THREE.Geometry();
         blendtree = [];
         blending();
@@ -32,6 +32,7 @@ function topologyTree(tree1,tree2){
         objectGroup.push(tree);
         tree.position.x=i*400;
     }
+    console.log(jj);
 }
 //后层拓扑结构处理
 function nextLayer(){
