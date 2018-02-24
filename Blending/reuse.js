@@ -22,25 +22,59 @@ function movetoOrigin(trunk){
 function reusableSet(trunk){
     reusableset.push(movetoOrigin(trunk));
 }
-var jj=0;
+var reusenumber=0;
 //将过渡枝干与reusableset中的枝干进行对比
 function compare(trunk){
     var ctrunk = movetoOrigin(trunk);
     var child = parseInt(trunk[0].child);
     var position = parseInt(trunk[0].position);
     for(var i=0; i < reusableset.length; i++){
-        var sum = 0;
-        for(var j=0 ;j<ctrunk.length && j<reusableset[i].length;j++)
-            sum+=caculate(ctrunk[j].pos,reusableset[i][j].pos);
-        if(sum <50) {
-            var temp = [];
-            for(var m=0;m<reusableset[i].length;m++){
-                var radius =  parseFloat(reusableset[i][m].radius);
-                var pos = {x:reusableset[i][m].pos.x,y:reusableset[i][m].pos.y,z:reusableset[i][m].pos.z};
-                temp.push({child:child,pos:pos,position:position,radius:radius});
+        if(reusableset[i].length == ctrunk.length) {
+            var sum = 0;
+            for (var j = 0; j < ctrunk.length && j < reusableset[i].length; j++)
+                sum += caculate(ctrunk[j].pos, reusableset[i][j].pos);
+            if (sum < 100) {
+                var temp = [];
+                for (var m = 0; m < reusableset[i].length; m++) {
+                    var radius = parseFloat(reusableset[i][m].radius);
+                    var pos = {x: reusableset[i][m].pos.x, y: reusableset[i][m].pos.y, z: reusableset[i][m].pos.z};
+                    temp.push({child: child, pos: pos, position: position, radius: radius});
+                }
+                reusenumber++;
+                return temp;
             }
-            jj++;
-            return temp;
+        }
+        else if(reusableset[i].length > ctrunk.length) {
+            var sum = 0;
+            var interval = parseInt(reusableset[i].length / ctrunk.length);
+            for (var j = ctrunk.length- 1, m = reusableset[i].length-1; j>=0&&m>=0 ; j--,m-=interval)
+                sum += caculate(ctrunk[j].pos, reusableset[i][m].pos);
+            if (sum < 100) {
+                var temp = [];
+                for (var m = 0; m < reusableset[i].length; m++) {
+                    var radius = parseFloat(reusableset[i][m].radius);
+                    var pos = {x: reusableset[i][m].pos.x, y: reusableset[i][m].pos.y, z: reusableset[i][m].pos.z};
+                    temp.push({child: child, pos: pos, position: position, radius: radius});
+                }
+                reusenumber++;
+                return temp;
+            }
+        }
+        else if(reusableset[i].length < ctrunk.length) {
+            var sum = 0;
+            var interval = parseInt(ctrunk.length / reusableset[i].length);
+            for (var j = ctrunk.length- 1, m = reusableset[i].length-1; j>=0 && m>=0; j-=interval,m--)
+                sum += caculate(ctrunk[j].pos, reusableset[i][m].pos);
+            if (sum < 100) {
+                var temp = [];
+                for (var m = 0; m < reusableset[i].length; m++) {
+                    var radius = parseFloat(reusableset[i][m].radius);
+                    var pos = {x: reusableset[i][m].pos.x, y: reusableset[i][m].pos.y, z: reusableset[i][m].pos.z};
+                    temp.push({child: child, pos: pos, position: position, radius: radius});
+                }
+                reusenumber++;
+                return temp;
+            }
         }
     }
     return trunk;
