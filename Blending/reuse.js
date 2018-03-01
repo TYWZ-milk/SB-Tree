@@ -33,7 +33,7 @@ function compare(trunk){
             var sum = 0;
             for (var j = 0; j < ctrunk.length && j < reusableset[i].length; j++)
                 sum += caculate(ctrunk[j].pos, reusableset[i][j].pos);
-            if (sum < 100) {
+            if (sum < 50) {
                 var temp = [];
                 for (var m = 0; m < reusableset[i].length; m++) {
                     var radius = parseFloat(reusableset[i][m].radius);
@@ -49,7 +49,7 @@ function compare(trunk){
             var interval = parseInt(reusableset[i].length / ctrunk.length);
             for (var j = ctrunk.length- 1, m = reusableset[i].length-1; j>=0&&m>=0 ; j--,m-=interval)
                 sum += caculate(ctrunk[j].pos, reusableset[i][m].pos);
-            if (sum < 100) {
+            if (sum < 50) {
                 var temp = [];
                 for (var m = 0; m < reusableset[i].length; m++) {
                     var radius = parseFloat(reusableset[i][m].radius);
@@ -65,7 +65,7 @@ function compare(trunk){
             var interval = parseInt(ctrunk.length / reusableset[i].length);
             for (var j = ctrunk.length- 1, m = reusableset[i].length-1; j>=0 && m>=0; j-=interval,m--)
                 sum += caculate(ctrunk[j].pos, reusableset[i][m].pos);
-            if (sum < 100) {
+            if (sum < 50) {
                 var temp = [];
                 for (var m = 0; m < reusableset[i].length; m++) {
                     var radius = parseFloat(reusableset[i][m].radius);

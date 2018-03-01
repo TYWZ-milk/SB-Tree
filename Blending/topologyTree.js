@@ -139,13 +139,16 @@ function addZero(tree1,tree2){
 //生成过渡树木层次结构
 function blending(){
     var layer = [];
+    var trunk;
     for(var i=0;i<ptree1.length||i<ptree2.length;i++){
         if(i==0) {
-            layer.push(compare(blendBranch(ptree1[i][0], ptree2[i][0])));
+            layer.push(blendBranch(ptree1[i][0], ptree2[i][0]));
         }
         else{
             for(var j=0; j<ptree1[i].length || j<ptree2[i].length; j++) {
-                layer.push(compare(blendBranch(ptree1[i][j], ptree2[i][j])));
+                trunk=compare(blendBranch(ptree1[i][j], ptree2[i][j]));
+                if(trunk!=null)
+                    layer.push(trunk);
             }
         }
         blendtree.push(layer);
