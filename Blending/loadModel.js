@@ -41,7 +41,7 @@ function initObject(tree1,tree2){
         side:THREE.DoubleSide,
         map:branchImg
     });
-    var loader = new THREE.OBJLoader();
+/*    var loader = new THREE.OBJLoader();
     loader.load(tree1, function(geometry) {
         geometry.traverse(function (child) {
             if(child instanceof THREE.Mesh){
@@ -69,7 +69,7 @@ function initObject(tree1,tree2){
         geometry.translateX(-2000);
         scene.add(geometry);
         objectGroup.push(geometry);
-    });
+    });*/
     var txt1 = tree1.substr(0,tree1.length-3) + "txtskl";
     var txt2 = tree2.substr(0,tree2.length-3) + "txtskl";
     readFile(txt1,txt2);

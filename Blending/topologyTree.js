@@ -2,73 +2,54 @@
  * Created by deii66 on 2018/1/30.
  */
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
-var topotree1,topotree2;//树1 和树2 的拓扑结构
 var treegeo;//一棵树，包含其枝干
 var branch;
-function Node(data) {
-    this.data = data;
-    this.leftNode = null;
-    this.rightNode = null;
-    this.parentNode = null;
-}
-function Tree(data) {
-    var node = new Node(data);
-    this.root = node;
-}
-//数组转换为拓扑结构
-function topologyTree(tree1,tree2){
+function originalTree(){
     treegeo = new THREE.Geometry();
     compact(tree1);
     drawTree(tree1);
     var tree = new THREE.Mesh(treegeo,material);
     scene.add(tree);
-    tree.position.y=300;
+    tree.position.x=-2000;
+    tree.position.z=-2000;
+    treegeo = new THREE.Geometry();
+    compact(tree2);
+    drawTree(tree2);
+    tree = new THREE.Mesh(treegeo,material);
+    scene.add(tree);
+    tree.position.x=2000;
+    tree.position.z=2000;
+}
+//数组转换为拓扑结构
+function topologyTree(tree1,tree2){
+    originalTree();
     addZero(tree1,tree2);
-    //firstLayer();
-    //nextLayer();
-/*    for(var i=0;i<4;i++) {
+
+    for(var total= 0,col= -4,row=-5;total<20;total++) {
         treegeo = new THREE.Geometry();
+        var temp = blendtree;
         blendtree = [];
-        blending();
+        if(total == 0)
+            blending(ptree1,ptree2);
+        else if(total <10)
+            blending(temp,ptree1);
+        else
+            blending(temp,ptree2);
         compact(blendtree);
         drawTree(blendtree);
         ptree1 = blendtree;
-        tree = new THREE.Mesh(treegeo,material);
+        var tree = new THREE.Mesh(treegeo,material);
         scene.add(tree);
         objectGroup.push(tree);
-        tree.position.x=i*400;
-    }
-    console.log(reusenumber);*/
-}
-//后层拓扑结构处理
-function nextLayer(){
-    
-}
-//第一层拓扑结构处理
-function firstLayer(){
-    if(ptree1[0][0].length>ptree2[0][0].length){
-        topotree1 = new Tree(ptree1[0][0][0]);
-        var current = topotree1.root;
-        var temp = current;
-        for(var i=1;i<ptree1[0][0].length ;i++){
-            current.leftNode = new Node(ptree1[0][0][i]);
-            temp = current;
-            current = current.leftNode;
-            current.parentNode = temp;
-        }
-        topotree2 = new Tree(ptree2[0][0][0]);
-        current = topotree2.root;
-        temp = current;
-        for(var i=1;i<ptree1[0][0].length ;i++){
-            if(ptree2[0][0][i]!=undefined)
-            current.leftNode = new Node(ptree2[0][0][i]);
-            else
-            current.leftNode = new Node(ptree2[0][0][ptree2[0][0].length-1]);
-            temp = current;
-            current = current.leftNode;
-            current.parentNode = temp;
+        tree.position.x=col*400;
+        tree.position.z=row*400;
+        col++;
+        if(col == 5){
+            col=-5;
+            row++;
         }
     }
+    console.log(reusenumber);
 }
 //数据预处理 包括添加零枝干、零枝干层、不同层处理
 function addZero(tree1,tree2){
@@ -143,7 +124,7 @@ function addZero(tree1,tree2){
     }
 }
 //生成过渡树木层次结构
-function blending(){
+function blending(ptree1,ptree2){
     var layer = [];
     var trunk;
     for(var i=0;i<ptree1.length||i<ptree2.length;i++){
@@ -199,11 +180,11 @@ function blendBranch(trunk1,trunk2){
         }
         else if (i < trunk1.length && i < trunk2.length) {
             position = new THREE.Vector3(trunk1[i].pos.x + trunk2[i].pos.x, trunk1[i].pos.y + trunk2[i].pos.y, trunk1[i].pos.z + trunk2[i].pos.z);
-            if(trunk1.length<trunk2.length) {
+            if(parseInt(trunk1[i].child)>parseInt(trunk2[i].child)) {
                 circle = {
                     radius: (trunk1[i].radius + trunk2[i].radius) / 2,
                     pos: position.divideScalar(2),
-                    child:trunk2[i].child,
+                    child:trunk1[i].child,
                     position:trunk2[i].position
                 };
             }
@@ -211,8 +192,8 @@ function blendBranch(trunk1,trunk2){
                 circle = {
                     radius: (trunk1[i].radius + trunk2[i].radius) / 2,
                     pos: position.divideScalar(2),
-                    child:trunk1[i].child,
-                    position:trunk1[i].position
+                    child:trunk2[i].child,
+                    position:trunk2[i].position
                 };
             }
         }
