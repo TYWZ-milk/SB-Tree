@@ -18,8 +18,8 @@ function Tree(data) {
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
     treegeo = new THREE.Geometry();
-    compact(tree2);
-    drawTree(tree2);
+    compact(tree1);
+    drawTree(tree1);
     var tree = new THREE.Mesh(treegeo,material);
     scene.add(tree);
     tree.position.y=300;
