@@ -17,22 +17,28 @@ function Tree(data) {
 }
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
+    treegeo = new THREE.Geometry();
+    compact(tree2);
+    drawTree(tree2);
+    var tree = new THREE.Mesh(treegeo,material);
+    scene.add(tree);
+    tree.position.y=300;
     addZero(tree1,tree2);
     //firstLayer();
     //nextLayer();
-    for(var i=0;i<4;i++) {
+/*    for(var i=0;i<4;i++) {
         treegeo = new THREE.Geometry();
         blendtree = [];
         blending();
-        compact();
-        drawTree();
+        compact(blendtree);
+        drawTree(blendtree);
         ptree1 = blendtree;
-        var tree = new THREE.Mesh(treegeo,material);
+        tree = new THREE.Mesh(treegeo,material);
         scene.add(tree);
         objectGroup.push(tree);
         tree.position.x=i*400;
     }
-    console.log(reusenumber);
+    console.log(reusenumber);*/
 }
 //后层拓扑结构处理
 function nextLayer(){
@@ -215,7 +221,7 @@ function blendBranch(trunk1,trunk2){
     return trunk;
 }
 //层次结构转换为树
-function drawTree(){
+function drawTree(blendtree){
     for(var i=0;i<blendtree.length;i++) {
         for(var j=0;j<blendtree[i].length;j++) {
             drawBranch(blendtree[i][j]);
@@ -282,7 +288,7 @@ function drawBranch(trunk) {
     treegeo.merge(geo);
 }
 //紧凑化处理
-function compact(){
+function compact(blendtree){
     for(var i=1;i<blendtree.length;i++){
         for(var j=0;j<blendtree[i].length;j++){
             var child = parseInt(blendtree[i][j][0].child);
