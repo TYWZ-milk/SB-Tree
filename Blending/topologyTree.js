@@ -23,15 +23,16 @@ function originalTree(){
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
     originalTree();
+    reusableSet();
     addZero(tree1,tree2);
 
-    for(var total= 0,col= -4,row=-5;total<20;total++) {
+    for(var total= 0,col= -4,row=-5;total<40;total++) {
         treegeo = new THREE.Geometry();
         var temp = blendtree;
         blendtree = [];
         if(total == 0)
             blending(ptree1,ptree2);
-        else if(total <10)
+        else if(total <20)
             blending(temp,ptree1);
         else
             blending(temp,ptree2);
@@ -133,7 +134,7 @@ function blending(ptree1,ptree2){
         }
         else{
             for(var j=0; j<ptree1[i].length || j<ptree2[i].length; j++) {
-                trunk=compare(blendBranch(ptree1[i][j], ptree2[i][j]));
+                trunk=compare(blendBranch(ptree1[i][j], ptree2[i][j]),i);
                 if(trunk!=null)
                     layer.push(trunk);
             }

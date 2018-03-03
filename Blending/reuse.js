@@ -19,57 +19,76 @@ function movetoOrigin(trunk){
     return rtrunk;
 }
 //reusabset为原始树木的枝干移动到零点后的集合
-function reusableSet(trunk){
-    reusableset.push(movetoOrigin(trunk));
+function reusableSet(){
+    var total = [];
+    for(var i=0;i<tree1.length || i<tree2.length;i++){
+        if(i>=tree1.length && i<tree2.length){
+            total.push(tree2[i]);
+        }
+        else if(i>=tree2.length && i<tree1.length){
+            total.push(tree1[i]);
+        }
+        else if(i<tree1.length && i<tree2.length){
+            total.push(tree1[i].concat(tree2[i]));
+        }
+    }
+    var layer = [];
+    for(var m=0;m<total.length;m++){
+        for(var n=0;n<total[m].length;n++){
+            layer.push(movetoOrigin(total[m][n]));
+        }
+        reusableset.push(layer);
+        layer = [];
+    }
 }
 var reusenumber=0;
 //将过渡枝干与reusableset中的枝干进行对比
-function compare(trunk){
+function compare(trunk,layer){
     var ctrunk = movetoOrigin(trunk);
     var child = parseInt(trunk[0].child);
     var position = parseInt(trunk[0].position);
-    for(var i=0; i < reusableset.length; i++){
-        if(reusableset[i].length == ctrunk.length) {
+    for(var i=0; i < reusableset[layer].length; i++){
+        if(reusableset[layer][i].length == ctrunk.length) {
             var sum = 0;
-            for (var j = 0; j < ctrunk.length && j < reusableset[i].length; j++)
-                sum += caculate(ctrunk[j].pos, reusableset[i][j].pos);
-            if (sum < 800) {
+            for (var j = 0; j < ctrunk.length && j < reusableset[layer][i].length; j++)
+                sum += caculate(ctrunk[j].pos, reusableset[layer][i][j].pos);
+            if (sum/ctrunk.length < 25) {
                 var temp = [];
-                for (var m = 0; m < reusableset[i].length; m++) {
-                    var radius = parseFloat(reusableset[i][m].radius);
-                    var pos = {x: reusableset[i][m].pos.x, y: reusableset[i][m].pos.y, z: reusableset[i][m].pos.z};
+                for (var m = 0; m < reusableset[layer][i].length; m++) {
+                    var radius = parseFloat(reusableset[layer][i][m].radius);
+                    var pos = {x: reusableset[layer][i][m].pos.x, y: reusableset[layer][i][m].pos.y, z: reusableset[layer][i][m].pos.z};
                     temp.push({child: child, pos: pos, position: position, radius: radius});
                 }
                 reusenumber++;
                 return temp;
             }
         }
-        else if(reusableset[i].length > ctrunk.length) {
+        else if(reusableset[layer][i].length > ctrunk.length) {
             var sum = 0;
-            var interval = parseInt(reusableset[i].length / ctrunk.length);
-            for (var j = ctrunk.length- 1, m = reusableset[i].length-1; j>=0&&m>=0 ; j--,m-=interval)
-                sum += caculate(ctrunk[j].pos, reusableset[i][m].pos);
-            if (sum < 800) {
+            var interval = parseInt(reusableset[layer][i].length / ctrunk.length);
+            for (var j = ctrunk.length- 1, m = reusableset[layer][i].length-1; j>=0&&m>=0 ; j--,m-=interval)
+                sum += caculate(ctrunk[j].pos, reusableset[layer][i][m].pos);
+            if (sum/ctrunk.length < 25) {
                 var temp = [];
-                for (var m = 0; m < reusableset[i].length; m++) {
-                    var radius = parseFloat(reusableset[i][m].radius);
-                    var pos = {x: reusableset[i][m].pos.x, y: reusableset[i][m].pos.y, z: reusableset[i][m].pos.z};
+                for (var m = 0; m < reusableset[layer][i].length; m++) {
+                    var radius = parseFloat(reusableset[layer][i][m].radius);
+                    var pos = {x: reusableset[layer][i][m].pos.x, y: reusableset[layer][i][m].pos.y, z: reusableset[layer][i][m].pos.z};
                     temp.push({child: child, pos: pos, position: position, radius: radius});
                 }
                 reusenumber++;
                 return temp;
             }
         }
-        else if(reusableset[i].length < ctrunk.length) {
+        else if(reusableset[layer][i].length < ctrunk.length) {
             var sum = 0;
-            var interval = parseInt(ctrunk.length / reusableset[i].length);
-            for (var j = ctrunk.length- 1, m = reusableset[i].length-1; j>=0 && m>=0; j-=interval,m--)
-                sum += caculate(ctrunk[j].pos, reusableset[i][m].pos);
-            if (sum < 800) {
+            var interval = parseInt(ctrunk.length / reusableset[layer][i].length);
+            for (var j = ctrunk.length- 1, m = reusableset[layer][i].length-1; j>=0 && m>=0; j-=interval,m--)
+                sum += caculate(ctrunk[j].pos, reusableset[layer][i][m].pos);
+            if (sum/reusableset[layer][i].length < 25) {
                 var temp = [];
-                for (var m = 0; m < reusableset[i].length; m++) {
-                    var radius = parseFloat(reusableset[i][m].radius);
-                    var pos = {x: reusableset[i][m].pos.x, y: reusableset[i][m].pos.y, z: reusableset[i][m].pos.z};
+                for (var m = 0; m < reusableset[layer][i].length; m++) {
+                    var radius = parseFloat(reusableset[layer][i][m].radius);
+                    var pos = {x: reusableset[layer][i][m].pos.x, y: reusableset[layer][i][m].pos.y, z: reusableset[layer][i][m].pos.z};
                     temp.push({child: child, pos: pos, position: position, radius: radius});
                 }
                 reusenumber++;

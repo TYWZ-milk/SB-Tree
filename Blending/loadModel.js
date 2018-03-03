@@ -171,7 +171,6 @@ function readFile(txt1,txt2){
                     branchlength--;
                     if(branchlength==0){
                         layer.push(trunk);
-                        reusableSet(trunk);
                         number--;
                         if(number == 0){
                             tree1.push(layer);
@@ -284,7 +283,6 @@ function readFile(txt1,txt2){
                     branchlength--;
                     if(branchlength==0){
                         layer.push(trunk);
-                        reusableSet(trunk);
                         number--;
                         if(number == 0){
                             tree2.push(layer);
