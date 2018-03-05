@@ -26,13 +26,13 @@ function topologyTree(tree1,tree2){
     reusableSet();
     addZero(tree1,tree2);
 
-    for(var total= 0,col= -4,row=-5;total<40;total++) {
+    for(var total= 0,col= -4,row=-5;total<100;total++) {
         treegeo = new THREE.Geometry();
         var temp = blendtree;
         blendtree = [];
         if(total == 0)
             blending(ptree1,ptree2);
-        else if(total <20)
+        else if(total <50)
             blending(temp,ptree1);
         else
             blending(temp,ptree2);
