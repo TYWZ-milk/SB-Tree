@@ -4,52 +4,79 @@
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
 var treegeo;//一棵树，包含其枝干
 var branch;
+var forestgeo;//森林的geometry
+//平移treegeo
+function moveTree(treegeo,x,y){
+    for(var i=0; i <treegeo.vertices.length;i++){
+        treegeo.vertices[i].x -= x*400;
+        treegeo.vertices[i].z -= y*400;
+    }
+}
 function originalTree(){
     treegeo = new THREE.Geometry();
     compact(tree1);
     drawTree(tree1);
-    var tree = new THREE.Mesh(treegeo,material);
-    scene.add(tree);
-    tree.position.x=-2000;
-    tree.position.z=-2000;
+    //var tree = new THREE.Mesh(treegeo,material);
+    //scene.add(tree);
+    //tree.position.x=-2000;
+    //tree.position.z=-2000;
+    moveTree(treegeo,-5,-5);
+    forestgeo.merge(treegeo);
+
     treegeo = new THREE.Geometry();
     compact(tree2);
     drawTree(tree2);
-    tree = new THREE.Mesh(treegeo,material);
-    scene.add(tree);
-    tree.position.x=2000;
-    tree.position.z=2000;
+    //tree = new THREE.Mesh(treegeo,material);
+    //scene.add(tree);
+    moveTree(treegeo,5,5);
+    forestgeo.merge(treegeo);
+    //tree.position.x=2000;
+    //tree.position.z=2000;
 }
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
+    forestgeo = new THREE.Geometry();
+
     originalTree();
     reusableSet();
     addZero(tree1,tree2);
 
     for(var total= 0,col= -4,row=-5;total<100;total++) {
-        treegeo = new THREE.Geometry();
-        var temp = blendtree;
-        blendtree = [];
-        if(total == 0)
-            blending(ptree1,ptree2);
-        else if(total <50)
-            blending(temp,ptree1);
-        else
-            blending(temp,ptree2);
-        compact(blendtree);
-        drawTree(blendtree);
-        ptree1 = blendtree;
-        var tree = new THREE.Mesh(treegeo,material);
-        scene.add(tree);
-        objectGroup.push(tree);
-        tree.position.x=col*400;
-        tree.position.z=row*400;
+        if(total % 2 ==0) {
+            treegeo = new THREE.Geometry();
+            var temp = blendtree;
+            blendtree = [];
+            if (total == 0)
+                blending(ptree1, ptree2);
+            else if (total < 50)
+                blending(temp, ptree1);
+            else
+                blending(temp, ptree2);
+            compact(blendtree);
+            drawTree(blendtree);
+            ptree1 = blendtree;
+            //var tree = new THREE.Mesh(treegeo,material);
+            //scene.add(tree);
+            moveTree(treegeo, col, row);
+            forestgeo.merge(treegeo);
+        }
+        else{
+            var clonetree = treegeo.clone();
+            moveTree(clonetree,1,0);
+            forestgeo.merge(clonetree);
+        }
+        //objectGroup.push(tree);
+        //tree.position.x=col*400;
+        //tree.position.z=row*400;
         col++;
-        if(col == 5){
+        if(col == 6){
             col=-5;
             row++;
         }
     }
+    var forest = new THREE.Mesh(forestgeo,material);
+    scene.add(forest);
+
     console.log(reusenumber);
 }
 //数据预处理 包括添加零枝干、零枝干层、不同层处理

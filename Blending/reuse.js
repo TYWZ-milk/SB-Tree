@@ -41,11 +41,11 @@ function reusableSet(){
             temp = [];
             for(var j=0;j<tree1[i].length;j++){
                 temp.push(tree1[i][j]);
-                if((i==1 && j==2) ||(i==2 && j==7)) break;
+                //if((i==1 && j==2) ||(i==2 && j==7)) break;
             }
             for(var j=0;j<tree2[i].length;j++){
                 temp.push(tree2[i][j]);
-                if((i==1 && j==2) ||(i==2 && j==7)) break;
+                //if((i==1 && j==2) ||(i==2 && j==7)) break;
             }
             total.push(temp);
         }
