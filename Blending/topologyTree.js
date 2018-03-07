@@ -23,7 +23,7 @@ function originalTree(){
     moveTree(treegeo,-5,-5);
     forestgeo.merge(treegeo);
 
-    treegeo = new THREE.Geometry();
+/*    treegeo = new THREE.Geometry();
     compact(tree2);
     drawTree(tree2);
     //tree = new THREE.Mesh(treegeo,material);
@@ -31,7 +31,7 @@ function originalTree(){
     moveTree(treegeo,5,5);
     forestgeo.merge(treegeo);
     //tree.position.x=2000;
-    //tree.position.z=2000;
+    //tree.position.z=2000;*/
 }
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
@@ -41,14 +41,14 @@ function topologyTree(tree1,tree2){
     reusableSet();
     addZero(tree1,tree2);
 
-    for(var total= 0,col= -4,row=-5;total<100;total++) {
+    for(var total= 0,col= -10,row=-10;total<forestSize;total++) {
         if(total % 2 ==0) {
             treegeo = new THREE.Geometry();
             var temp = blendtree;
             blendtree = [];
             if (total == 0)
                 blending(ptree1, ptree2);
-            else if (total < 50)
+            else if (total < forestSize/2)
                 blending(temp, ptree1);
             else
                 blending(temp, ptree2);
@@ -69,8 +69,8 @@ function topologyTree(tree1,tree2){
         //tree.position.x=col*400;
         //tree.position.z=row*400;
         col++;
-        if(col == 6){
-            col=-5;
+        if(col == 11){
+            col=-10;
             row++;
         }
     }
@@ -238,7 +238,7 @@ function drawTree(blendtree){
     }
 }
 function drawBranch(trunk) {
-    var seg = 30;
+    var seg = 5;
     var geo = new THREE.Geometry();
     for(var i = 0, l = trunk.length; i < l; i ++){
         var circle = trunk[i];

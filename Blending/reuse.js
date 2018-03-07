@@ -70,7 +70,7 @@ function compare(trunk,layer){
             var sum = 0;
             for (var j = 0; j < ctrunk.length && j < reusableset[layer][i].length; j++)
                 sum += caculate(ctrunk[j].pos, reusableset[layer][i][j].pos);
-            if (sum/ctrunk.length < 50) {
+            if (sum/ctrunk.length < 20) {
                 var temp = [];
                 for (var m = 0; m < reusableset[layer][i].length; m++) {
                     var radius = parseFloat(reusableset[layer][i][m].radius);
@@ -86,7 +86,7 @@ function compare(trunk,layer){
             var interval = parseInt(reusableset[layer][i].length / ctrunk.length);
             for (var j = ctrunk.length- 1, m = reusableset[layer][i].length-1; j>=0&&m>=0 ; j--,m-=interval)
                 sum += caculate(ctrunk[j].pos, reusableset[layer][i][m].pos);
-            if (sum/ctrunk.length < 50) {
+            if (sum/ctrunk.length < 20) {
                 var temp = [];
                 for (var m = 0; m < reusableset[layer][i].length; m++) {
                     var radius = parseFloat(reusableset[layer][i][m].radius);
@@ -102,7 +102,7 @@ function compare(trunk,layer){
             var interval = parseInt(ctrunk.length / reusableset[layer][i].length);
             for (var j = ctrunk.length- 1, m = reusableset[layer][i].length-1; j>=0 && m>=0; j-=interval,m--)
                 sum += caculate(ctrunk[j].pos, reusableset[layer][i][m].pos);
-            if (sum/reusableset[layer][i].length < 50) {
+            if (sum/reusableset[layer][i].length < 20) {
                 var temp = [];
                 for (var m = 0; m < reusableset[layer][i].length; m++) {
                     var radius = parseFloat(reusableset[layer][i][m].radius);

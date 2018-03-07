@@ -3,8 +3,9 @@
  */
 var scene,canvas,width,height,renderer,camera,Orbitcontrols,stats,lbbs;
 var objectGroup=[];
+var forestSize = 370;//森林总数
 function init() {
-   // lbbs = new LBBs();
+    lbbs = new LBBs();
     canvas = document.getElementById("canvas");
     width = window.innerWidth;
     height = window.innerHeight;
@@ -91,6 +92,6 @@ function animate() {
     stats.update();
     renderer.clear();
     renderer.render(scene,camera);
-    //lbbs.update();
+    lbbs.update();
     requestAnimationFrame(animate);
 }
