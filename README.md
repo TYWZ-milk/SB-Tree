@@ -12,9 +12,10 @@ Simple Blending Tree
 ![](https://github.com/TYWZ-milk/SB-Tree/raw/master/images/result1.png)
 ![](https://github.com/TYWZ-milk/SB-Tree/raw/master/images/result2.png)
 >以上效果为ALO6a与Blue Spruce两棵树的过渡树木。AL06a与Blue Spruce均为3层树木，图中每棵树均有大约500棵枝干。左右分别为两棵原始树木，中间为过渡树木。
+
 >2018/3/7效果图
-
-
+![](https://github.com/TYWZ-milk/SB-Tree/raw/master/images/result1_2018.3.7.jpg)
+![](https://github.com/TYWZ-milk/SB-Tree/raw/master/images/result2_2018.3.7.jpg)
 >以上效果为ALO6a与Blue Spruce两棵树的过渡树木。AL06a与Blue Spruce均为3层树木，图中每棵树均有大约50~100棵枝干。相似度标准为20，加载的树木总数为260棵，未使用clone，圆台精度降低至5，采用了重用，将所有的树木merge到一片森林中。
 
 ## 算法实现
@@ -47,8 +48,10 @@ Simple Blending Tree
 >>相似标准提高可以在画面加载更多树木，与此同时，树木美观性下降，标准放宽达到50的时候，树木的第三层几乎难以观察到。
 >>重用的枝干不能进行方向或大小的改变。
  
+ 
 >界面待优化
 >>目前只有3棵树木，而且叶子也没加，纹理还不够美观。
  
+ 
 >性能提高
 >>计算过程过慢，性能有待提高。
