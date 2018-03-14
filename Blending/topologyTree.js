@@ -4,6 +4,7 @@
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
 var treegeo;//一棵树，包含其枝干
 var branch;
+var forest;
 var forestgeo;//森林的geometry
 //平移treegeo
 function moveTree(treegeo,x,y){
@@ -74,7 +75,7 @@ function topologyTree(tree1,tree2){
             row++;
         }
     }
-    var forest = new THREE.Mesh(forestgeo,material);
+    forest = new THREE.Mesh(forestgeo,material);
     scene.add(forest);
 
     console.log(reusenumber);
