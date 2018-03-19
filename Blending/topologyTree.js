@@ -2,10 +2,8 @@
  * Created by deii66 on 2018/1/30.
  */
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
-var treegeo;//一棵树，包含其枝干
 var branch;
 var forest;
-var forestgeo;//森林的geometry
 //平移treegeo
 function moveTree(treegeo,x,y){
     for(var i=0; i <treegeo.vertices.length;i++){
@@ -14,7 +12,6 @@ function moveTree(treegeo,x,y){
     }
 }
 function originalTree(){
-    treegeo = new THREE.Geometry();
     compact(tree1);
     drawTree(tree1);
     //var tree = new THREE.Mesh(treegeo,material);
@@ -22,7 +19,6 @@ function originalTree(){
     //tree.position.x=-2000;
     //tree.position.z=-2000;
     moveTree(treegeo,-5,-5);
-    forestgeo.merge(treegeo);
 
 /*    treegeo = new THREE.Geometry();
     compact(tree2);
@@ -36,7 +32,6 @@ function originalTree(){
 }
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
-    forestgeo = new THREE.Geometry();
 
     originalTree();
     reusableSet();
@@ -44,7 +39,6 @@ function topologyTree(tree1,tree2){
 
     for(var total= 0,col= -10,row=-10;total<forestSize;total++) {
         if(total % 2 ==0) {
-            treegeo = new THREE.Geometry();
             var temp = blendtree;
             blendtree = [];
             if (total == 0)
@@ -59,12 +53,10 @@ function topologyTree(tree1,tree2){
             //var tree = new THREE.Mesh(treegeo,material);
             //scene.add(tree);
             moveTree(treegeo, col, row);
-            forestgeo.merge(treegeo);
         }
         else{
             var clonetree = treegeo.clone();
             moveTree(clonetree,1,0);
-            forestgeo.merge(clonetree);
         }
         //objectGroup.push(tree);
         //tree.position.x=col*400;
@@ -75,8 +67,6 @@ function topologyTree(tree1,tree2){
             row++;
         }
     }
-    forest = new THREE.Mesh(forestgeo,material);
-    scene.add(forest);
 
     console.log(reusenumber);
 }
@@ -240,7 +230,8 @@ function drawTree(blendtree){
 }
 function drawBranch(trunk) {
     var seg = 5;
-    var geo = new THREE.Geometry();
+    var geo = new THREE.BufferGeometry();
+    var vertices = [];
     for(var i = 0, l = trunk.length; i < l; i ++){
         var circle = trunk[i];
         for(var s=0;s<seg;s++){//for each point in the circle
@@ -272,11 +263,10 @@ function drawBranch(trunk) {
                 pos.y = 0;
                 pos.z = rd * Math.sin(2 * Math.PI / seg * s);
             }
-            geo.vertices.push(pos.add(circle.pos));
+            vertices.push(pos.add(circle.pos).x,pos.add(circle.pos).y,pos.add(circle.pos).z);
         }
     }
-
-    for(i=0;i<l-1;i++){
+/*    for(i=0;i<l-1;i++){
         for(s=0;s<seg;s++){
             var v1 = i*seg+s;
             var v2 = i*seg+(s+1)%seg;
@@ -288,14 +278,15 @@ function drawBranch(trunk) {
             geo.faces.push(new THREE.Face3(v3,v4,v1));
             geo.faceVertexUvs[0].push([new THREE.Vector2((s+1)/seg,1),new THREE.Vector2((s)/seg,1),new THREE.Vector2((s)/seg,0)]);
         }
-    }//add faces and uv
-    geo.computeFaceNormals();
-/*    branch = new THREE.Mesh(geo,new THREE.MeshLambertMaterial({
+    }//add faces and uv*/
+    geo.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+    geo.computeVertexNormals();
+   branch = new THREE.Mesh(geo,new THREE.MeshLambertMaterial({
         // wireframe:true,
         side:THREE.DoubleSide,
         map:branchImg
-    }));*/
-    treegeo.merge(geo);
+    }));
+    scene.add(branch);
 }
 //紧凑化处理
 function compact(blendtree){
