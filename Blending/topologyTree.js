@@ -3,32 +3,26 @@
  */
 var ptree1=[],ptree2=[],blendtree=[];//增添零枝干后的树1树2
 var branch;
-var forest;
+var tree = [];
+var forest = [];
 //平移treegeo
-function moveTree(treegeo,x,y){
-    for(var i=0; i <treegeo.vertices.length;i++){
-        treegeo.vertices[i].x -= x*400;
-        treegeo.vertices[i].z -= y*400;
+function moveTree(tree,x,y){
+    for(var i=0; i <tree.length;i++){
+        tree[i].position.x -= x*400;
+        tree[i].position.z -= y*400;
+        scene.add(tree[i]);
     }
 }
 function originalTree(){
+    tree = [];
     compact(tree1);
     drawTree(tree1);
-    //var tree = new THREE.Mesh(treegeo,material);
-    //scene.add(tree);
-    //tree.position.x=-2000;
-    //tree.position.z=-2000;
-    moveTree(treegeo,-5,-5);
+    moveTree(tree,-5,-5);
 
-/*    treegeo = new THREE.Geometry();
+    tree = [];
     compact(tree2);
     drawTree(tree2);
-    //tree = new THREE.Mesh(treegeo,material);
-    //scene.add(tree);
-    moveTree(treegeo,5,5);
-    forestgeo.merge(treegeo);
-    //tree.position.x=2000;
-    //tree.position.z=2000;*/
+    moveTree(tree,5,5);
 }
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
@@ -38,26 +32,21 @@ function topologyTree(tree1,tree2){
     addZero(tree1,tree2);
 
     for(var total= 0,col= -10,row=-10;total<forestSize;total++) {
-        if(total % 2 ==0) {
-            var temp = blendtree;
-            blendtree = [];
-            if (total == 0)
-                blending(ptree1, ptree2);
-            else if (total < forestSize/2)
-                blending(temp, ptree1);
-            else
-                blending(temp, ptree2);
-            compact(blendtree);
-            drawTree(blendtree);
-            ptree1 = blendtree;
+        tree=[];
+        var temp = blendtree;
+        blendtree = [];
+        if (total == 0)
+            blending(ptree1, ptree2);
+        else if (total < forestSize/2)
+            blending(temp, ptree1);
+        else
+            blending(temp, ptree2);
+        compact(blendtree);
+        drawTree(blendtree);
+        ptree1 = blendtree;
             //var tree = new THREE.Mesh(treegeo,material);
             //scene.add(tree);
-            moveTree(treegeo, col, row);
-        }
-        else{
-            var clonetree = treegeo.clone();
-            moveTree(clonetree,1,0);
-        }
+        moveTree(tree, col, row);
         //objectGroup.push(tree);
         //tree.position.x=col*400;
         //tree.position.z=row*400;
@@ -286,7 +275,8 @@ function drawBranch(trunk) {
         side:THREE.DoubleSide,
         map:branchImg
     }));
-    scene.add(branch);
+    tree.push(branch);
+    forest.push(branch);
 }
 //紧凑化处理
 function compact(blendtree){

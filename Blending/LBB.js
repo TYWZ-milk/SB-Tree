@@ -92,7 +92,7 @@ LBBs.prototype = {
         }
         
         var time2 = Date.now();
-        console.log("time1:"+(time2-time1));
+        //console.log("time1:"+(time2-time1));
         visible.sort(function (lbb1, lbb2) {
             return lbb1.depth - lbb2.depth;
         });
@@ -115,7 +115,7 @@ LBBs.prototype = {
             }
         }
         var time3 = Date.now();
-        console.log("time2:"+(time3 - time2));
+        //console.log("time2:"+(time3 - time2));
 
 
     },
