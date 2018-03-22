@@ -221,7 +221,8 @@ function drawBranch(trunk) {
     var seg = 5;
     var geo = new THREE.BufferGeometry();
     var vertices = [];
-    for(var i = 0, l = trunk.length; i < l; i ++){
+    var _32array = [];
+    for(var i = 0, l = trunk.length; i < l-1; i ++){
         var circle = trunk[i];
         for(var s=0;s<seg;s++){//for each point in the circle
             var rd = circle.radius;
@@ -252,9 +253,11 @@ function drawBranch(trunk) {
                 pos.y = 0;
                 pos.z = rd * Math.sin(2 * Math.PI / seg * s);
             }
-            vertices.push(pos.add(circle.pos).x,pos.add(circle.pos).y,pos.add(circle.pos).z);
+            vertices.push(pos.add(circle.pos));
         }
     }
+    vertices.push(trunk[trunk.length-1].pos);
+    _32array = translate(vertices);
 /*    for(i=0;i<l-1;i++){
         for(s=0;s<seg;s++){
             var v1 = i*seg+s;
@@ -268,7 +271,7 @@ function drawBranch(trunk) {
             geo.faceVertexUvs[0].push([new THREE.Vector2((s+1)/seg,1),new THREE.Vector2((s)/seg,1),new THREE.Vector2((s)/seg,0)]);
         }
     }//add faces and uv*/
-    geo.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+    geo.addAttribute( 'position', new THREE.Float32BufferAttribute( _32array, 3 ) );
     geo.computeVertexNormals();
    branch = new THREE.Mesh(geo,new THREE.MeshLambertMaterial({
         // wireframe:true,
@@ -277,6 +280,49 @@ function drawBranch(trunk) {
     }));
     tree.push(branch);
     forest.push(branch);
+}
+//点集转换为32Array
+function translate(vertices){
+    var precision =5;
+    var _32array = [];
+    for(var i=0;i<vertices.length;i++){
+        if((i+1) %5 == 0 && i + 1 != vertices.length-1){
+            _32array.push(vertices[i].x, vertices[i].y, vertices[i].z);
+            _32array.push(vertices[i - precision +1].x, vertices[i - precision +1].y, vertices[i - precision +1].z);
+            _32array.push(vertices[i + precision].x, vertices[i + precision].y, vertices[i + precision].z);
+        }
+        else if(i == vertices.length-1){
+            _32array.push(vertices[i].x, vertices[i].y, vertices[i].z);
+        }
+        else if(i + 1 == vertices.length-1){
+            _32array.push(vertices[i].x, vertices[i].y, vertices[i].z);
+            _32array.push(vertices[i- precision +1].x, vertices[i- precision +1].y, vertices[i- precision +1].z);
+            _32array.push(vertices[vertices.length-1].x, vertices[vertices.length-1].y, vertices[vertices.length-1].z);
+        }
+        else if(i + precision >= vertices.length-1){
+            _32array.push(vertices[i].x, vertices[i].y, vertices[i].z);
+            _32array.push(vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z);
+            _32array.push(vertices[vertices.length-1].x, vertices[vertices.length-1].y, vertices[vertices.length-1].z);
+        }
+        else {
+            _32array.push(vertices[i].x, vertices[i].y, vertices[i].z);
+            _32array.push(vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z);
+            _32array.push(vertices[i + precision].x, vertices[i + precision].y, vertices[i + precision].z);
+        }
+    }
+    for(var j = vertices.length-2; j>=5;j--){
+        if(j % 5 ==0){
+            _32array.push(vertices[j].x, vertices[j].y, vertices[j].z);
+            _32array.push(vertices[j + precision -1].x, vertices[j + precision -1].y, vertices[j + precision -1].z);
+            _32array.push(vertices[j - 1].x, vertices[j - 1].y, vertices[j -1].z);
+        }
+        else{
+            _32array.push(vertices[j].x, vertices[j].y, vertices[j].z);
+            _32array.push(vertices[j - 1].x, vertices[j - 1].y, vertices[j - 1].z);
+            _32array.push(vertices[j - precision -1].x, vertices[j - precision -1].y, vertices[j - precision -1].z);
+        }
+    }
+    return _32array;
 }
 //紧凑化处理
 function compact(blendtree){
