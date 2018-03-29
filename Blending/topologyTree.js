@@ -8,8 +8,8 @@ var forest = [];
 //平移treegeo
 function moveTree(tree,x,y){
     for(var i=0; i <tree.length;i++){
-        tree[i].position.x -= x*400;
-        tree[i].position.z -= y*400;
+        tree[i].position.x -= x*230;
+        tree[i].position.z -= y*230;
         scene.add(tree[i]);
     }
 }
@@ -27,26 +27,35 @@ function originalTree(){
 //数组转换为拓扑结构
 function topologyTree(tree1,tree2){
 
-    originalTree();
+    //originalTree();
     reusableSet();
     addZero(tree1,tree2);
-
+    console.time("sort");
     for(var total= 0,col= -10,row=-10;total<forestSize;total++) {
-        tree=[];
-        var temp = blendtree;
-        blendtree = [];
-        if (total == 0)
-            blending(ptree1, ptree2);
-        else if (total < forestSize/2)
-            blending(temp, ptree1);
-        else
-            blending(temp, ptree2);
-        compact(blendtree);
-        drawTree(blendtree);
-        ptree1 = blendtree;
+        if(total%2==0) {
+            tree = [];
+            var temp = blendtree;
+            blendtree = [];
+            if (total == 0)
+                blending(ptree1, ptree2);
+            else if (total < forestSize / 2)
+                blending(temp, ptree1);
+            else
+                blending(temp, ptree2);
+            compact(blendtree);
+            addLeaf(blendtree);
+            drawTree(blendtree);
+            ptree1 = blendtree;
             //var tree = new THREE.Mesh(treegeo,material);
             //scene.add(tree);
-        moveTree(tree, col, row);
+            moveTree(tree, col, row);
+        }
+        else{
+            var clonetree = [];
+
+            moveTree(clonetree,col,row);
+
+        }
         //objectGroup.push(tree);
         //tree.position.x=col*400;
         //tree.position.z=row*400;
@@ -56,8 +65,8 @@ function topologyTree(tree1,tree2){
             row++;
         }
     }
-
-    console.log(reusenumber);
+    console.timeEnd("sort");
+    //console.log(reusenumber);
 }
 //数据预处理 包括添加零枝干、零枝干层、不同层处理
 function addZero(tree1,tree2){
@@ -217,6 +226,37 @@ function drawTree(blendtree){
         }
     }
 }
+//添加叶子，先将分层了的tree转变成不分层的数组结构，然后在圆环序列上随机添加叶子
+function addLeaf(trunk){
+    var treecs = [];
+    for(var i=0;i<trunk.length;i++){
+        for(var j=0;j<trunk[i].length;j++){
+            treecs.push(trunk[i][j]);
+        }
+    }
+    for(var i = 1;i<treecs.length;i++) {
+        for(var j = Math.floor(treecs[i].length/2+Math.floor(Math.random()*4 + 1));j<treecs[i].length;j+=Math.floor(Math.random()*3 + 1)) {
+            for (var k = Math.floor(Math.random() * 6 + 1); k < 6; k++) {
+                var phi = Math.random() * 60 + 20;
+                var theta = Math.random() * 360;
+                var selfRotate = Math.random() * 360;
+                var leaf_size = 20;
+
+                var geo = new THREE.PlaneGeometry(leaf_size, leaf_size);
+                var leafMesh = new THREE.Mesh(geo, leafMat);
+                leafMesh.geometry.translate(0, leaf_size / 2.0, 0);
+                leafMesh.rotateY(theta / 180 * Math.PI);
+                leafMesh.rotateZ(phi / 180 * Math.PI);
+                leafMesh.rotateY(selfRotate / 180 * Math.PI);
+                leafMesh.position.x = treecs[i][j].pos.x;
+                leafMesh.position.z = treecs[i][j].pos.z;
+                leafMesh.position.y = treecs[i][j].pos.y;
+                tree.push(leafMesh);
+                forest.push(leafMesh);
+            }
+        }
+    }
+}
 function drawBranch(trunk) {
     var seg = 5;
     var geo = new THREE.BufferGeometry();
@@ -273,11 +313,52 @@ function drawBranch(trunk) {
     }//add faces and uv*/
     geo.addAttribute( 'position', new THREE.Float32BufferAttribute( _32array, 3 ) );
     geo.computeVertexNormals();
-   branch = new THREE.Mesh(geo,new THREE.MeshLambertMaterial({
-        // wireframe:true,
-        side:THREE.DoubleSide,
-        map:branchImg
-    }));
+/*    var instancedGeo = new THREE.InstancedBufferGeometry();
+    instancedGeo.index = geo.index;
+    instancedGeo.attributes = geo.attributes;
+
+    var particleCount = 1;
+    var translateArray = new Float32Array( particleCount * 3 );
+
+    for ( var i = 0, i3 = 0, l = particleCount; i < l; i ++, i3 += 3 ) {
+        translateArray[ i3 + 0 ] = Math.random() * 10 - 1;
+        translateArray[ i3 + 1 ] = Math.random() * 10 - 1;
+        translateArray[ i3 + 2 ] = Math.random() * 10 - 1;
+    }
+
+    instancedGeo.addAttribute('translate', new THREE.InstancedBufferAttribute( translateArray, 3, 1 ) );
+    var shader_material = new THREE.RawShaderMaterial({
+        uniforms: {map:{value:branchImg}},
+        vertexShader: [
+            "precision highp float;",
+            "",
+            "uniform mat4 modelViewMatrix;",
+            "uniform mat4 projectionMatrix;",
+            "",
+            "attribute vec3 position;",
+            "attribute vec3 translate;",
+            "",
+            "void main() {",
+            "",
+            "	gl_Position = projectionMatrix * modelViewMatrix * vec4( translate + position, 1.0 );",
+            "",
+            "}"
+        ].join("\n"),
+        fragmentShader: [
+            "precision highp float;",
+            "",
+            "void main() {",
+            "",
+            "	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);",
+            "",
+            "}"
+        ].join("\n"),
+        side: THREE.DoubleSide,
+        transparent: false,
+
+    });
+   branch = new THREE.Mesh(instancedGeo,shader_material);*/
+    branch = new THREE.Mesh(geo,material);
     tree.push(branch);
     forest.push(branch);
 }

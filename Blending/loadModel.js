@@ -1,4 +1,5 @@
 var branchImg;
+var leafMat;
 var material;
 function loadSky() {
     //add skybox
@@ -18,7 +19,7 @@ function loadSky() {
     });
     // build the skybox Mesh
     // add it to the scene
-    return new THREE.Mesh(new THREE.CubeGeometry(1000 * 10,1000 * 10, 1000 * 10), material);
+    return new THREE.Mesh(new THREE.CubeGeometry(100 * 50, 100 * 50, 100 * 50), material);
 }
 
 function loadGround() {
@@ -26,8 +27,8 @@ function loadGround() {
     var texture2 = THREE.ImageUtils.loadTexture("../textures/terrain/grasslight-big.jpg");
     texture2.wrapS = THREE.RepeatWrapping;
     texture2.wrapT = THREE.RepeatWrapping;
-    texture2.repeat.set(100,100);
-    var plane = new THREE.PlaneGeometry(10000,10000);
+    texture2.repeat.set(100*50/100,100*50/100);
+    var plane = new THREE.PlaneGeometry(5*1000,5000);
     plane.rotateX(-Math.PI/2);
     return new THREE.Mesh(plane, new THREE.MeshLambertMaterial({
         map: texture2
@@ -35,7 +36,14 @@ function loadGround() {
 }
 //初始化树木
 function initObject(tree1,tree2){
-    branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/timg.jpg");
+    branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png");
+    leafMat = new THREE.MeshLambertMaterial({
+        map:THREE.ImageUtils.loadTexture("../textures/tree/leaf01-min.png"),
+        color:0x253F08,
+        side:THREE.DoubleSide,
+        transparent:true,
+        depthTest:false
+    });
     material = new THREE.MeshLambertMaterial({
         // wireframe:true,
         side:THREE.DoubleSide,

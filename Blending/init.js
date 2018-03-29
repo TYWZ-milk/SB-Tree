@@ -2,7 +2,7 @@
  * Created by deii66 on 2018/1/30.
  */
 var scene,canvas,width,height,renderer,camera,Orbitcontrols,stats,lbbs;
-var forestSize = 1000;//森林总数
+var forestSize = 10;//森林总数
 function init() {
     lbbs = new LBBs();
     canvas = document.getElementById("canvas");
@@ -83,7 +83,7 @@ function initGui(){
     var dataGui = new dat.GUI();
     dataGui.add(controls,'AL06a');
     dataGui.add(controls,'Blue_Spruce');
-    dataGui.add(controls,'BS07a');
+    //dataGui.add(controls,'BS07a');
     dataGui.add(controls,'Blend');
     dataGui.add(controls,'Delete');
 }
