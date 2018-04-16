@@ -32,7 +32,7 @@ function topologyTree(tree1,tree2){
     reusableSet();
     addZero(tree1,tree2);
     for(var total= 0,col= -10,row=-10;total<forestSize;total++) {
-        if(total % 2 == 0){
+        //if(total % 2 == 0){
             tree = [];
             var temp = blendtree;
             blendtree = [];
@@ -43,13 +43,14 @@ function topologyTree(tree1,tree2){
             else
                 blending(temp, ptree2);
             compact(blendtree);
-            addLeaf(blendtree);
-            drawTree(blendtree);
+            //addLeaf(blendtree);
+            //drawTree(blendtree);
+            toMongo(blendtree,total);
             ptree1 = blendtree;
 
-            moveTree(tree, col, row);
-        }
-        else{
+           // moveTree(tree, col, row);
+        //}
+/*        else{
             var copybranch = [];
             for(var i = 0 ;i<tree.length;i++){
                 if(tree[i].geometry.type != 'PlaneGeometry') {
@@ -74,7 +75,7 @@ function topologyTree(tree1,tree2){
                 }
             }
             moveTree(copybranch, col, row);
-        }
+        }*/
         //objectGroup.push(tree);
         //tree.position.x=col*400;
         //tree.position.z=row*400;
@@ -86,7 +87,34 @@ function topologyTree(tree1,tree2){
     }
     //console.log(reusenumber);
 }
+var content="";
+function toMongo(blendtree,total){
 
+    for(var i = 0;i<blendtree.length;i++){
+        for(var j=0;j<blendtree[i].length;j++){
+            content+="branch";
+            for(var m = 0;m<blendtree[i][j].length;m++) {
+                var x = blendtree[i][j][m].pos.x;
+                var y = blendtree[i][j][m].pos.y;
+                var z = blendtree[i][j][m].pos.z;
+                var radius = blendtree[i][j][m].radius;
+                content += "x" + x + "y" + y + "z" + z + "radius" + radius;
+            }
+        }
+    }
+    $.post("http://127.0.0.1:9091/postTreeModel",{
+        "treeID" : total,
+        "treeData" : content
+    },function(result){
+        if(result == "1"){
+            //注册成功
+            alert("插入成功");
+        }
+        else {
+            alert("插入失败");
+        }
+    });
+}
 //数据预处理 包括添加零枝干、零枝干层、不同层处理
 function addZero(tree1,tree2){
     var layer = [];
