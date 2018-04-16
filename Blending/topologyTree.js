@@ -89,7 +89,7 @@ function topologyTree(tree1,tree2){
 }
 var content="";
 function toMongo(blendtree,total){
-
+    content = "";
     for(var i = 0;i<blendtree.length;i++){
         for(var j=0;j<blendtree[i].length;j++){
             content+="branch";
