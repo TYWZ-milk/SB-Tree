@@ -71,11 +71,11 @@ var controls = new function (){
         }
         else if(this.AL06a == true && this.BS07a == true){
             THREE.Cache.clear();
-            initObject("../models/AL06a.obj","../models/BS07a_elastic_1_max.obj");
+            initObject("../models/AL06a.obj","../models/Scotch Pine.obj");
         }
         else if(this.Blue_Spruce == true && this.BS07a == true){
             THREE.Cache.clear();
-            initObject("../models/Blue Spruce.obj","../models/BS07a_elastic_1_max.obj");
+            initObject("../models/Blue Spruce.obj","../models/Scotch Pine.obj");
         }
     }
 };
@@ -83,7 +83,7 @@ function initGui(){
     var dataGui = new dat.GUI();
     dataGui.add(controls,'AL06a');
     dataGui.add(controls,'Blue_Spruce');
-    //dataGui.add(controls,'BS07a');
+    dataGui.add(controls,'BS07a');
     dataGui.add(controls,'Blend');
     dataGui.add(controls,'Delete');
 }

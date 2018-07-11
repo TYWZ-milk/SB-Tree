@@ -44,11 +44,11 @@ function topologyTree(tree1,tree2){
                 blending(temp, ptree2);
             compact(blendtree);
             //addLeaf(blendtree);
-            //drawTree(blendtree);
-            toMongo(blendtree,total);
+            drawTree(blendtree);
+            //toMongo(blendtree,total);
             ptree1 = blendtree;
 
-           // moveTree(tree, col, row);
+            moveTree(tree, col, row);
         //}
 /*        else{
             var copybranch = [];
@@ -103,12 +103,12 @@ function toMongo(blendtree,total){
         }
     }
     $.post("http://127.0.0.1:9091/postTreeModel",{
-        "treeID" : total,
+        "treeID" : "Blue Spruce_BS07a_update",
         "treeData" : content
     },function(result){
         if(result == "1"){
             //注册成功
-            alert("插入成功");
+            //alert("插入成功");
         }
         else {
             alert("插入失败");
@@ -193,11 +193,11 @@ function blending(ptree1,ptree2){
     var trunk;
     for(var i=0;i<ptree1.length||i<ptree2.length;i++){
         if(i==0) {
-            layer.push(blendBranch(ptree1[i][0], ptree2[i][0]));
+            layer.push(blendBranch(ptree1[i][0], ptree2[i][0],false));
         }
         else{
             for(var j=0; j<ptree1[i].length || j<ptree2[i].length; j++) {
-                trunk=compare(blendBranch(ptree1[i][j], ptree2[i][j]),i);
+                trunk=compare(blendBranch(ptree1[i][j], ptree2[i][j],true),i);
                 if(trunk!=null)
                     layer.push(trunk);
             }
@@ -207,7 +207,7 @@ function blending(ptree1,ptree2){
     }
 }
 //任意两枝干生成过渡枝干
-function blendBranch(trunk1,trunk2){
+function blendBranch(trunk1,trunk2,boolrand){
     var position;
     var circle;
     var trunk = [];
@@ -262,6 +262,17 @@ function blendBranch(trunk1,trunk2){
             }
         }
         trunk.push(circle);
+    }
+    if(boolrand == true) {
+        var seed = trunk.length % 50 * 10;
+        var random = Math.floor(Math.random() * (2 * seed + 3) - seed - 1);
+        console.log(random);
+        for (var i = 0; i < trunk.length; i++) {
+            trunk[i].pos.x += random;
+            trunk[i].pos.y += random;
+            trunk[i].pos.z += random;
+            trunk[i].pos.radius += random;
+        }
     }
     return trunk;
 }
