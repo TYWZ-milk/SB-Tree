@@ -1,7 +1,7 @@
 /**
  * Created by deii66 on 2018/1/30.
  */
-var scene,canvas,width,height,renderer,camera,Orbitcontrols,stats,lbbs;
+var scene,canvas,width,height,renderer,camera,Orbitcontrols,stats,lbbs,treeID;
 var forestSize = 100;//森林总数
 function init() {
     lbbs = new LBBs();
@@ -67,14 +67,17 @@ var controls = new function (){
     this.Blend = function (){
         if(this.AL06a == true && this.Blue_Spruce==true){
             THREE.Cache.clear();
+            treeID = "AL06a_Blue_Spruce";
             initObject("../models/AL06a.obj","../models/Blue Spruce.obj");
         }
         else if(this.AL06a == true && this.BS07a == true){
             THREE.Cache.clear();
+            treeID = "AL06a_BS07a";
             initObject("../models/AL06a.obj","../models/Scotch Pine.obj");
         }
         else if(this.Blue_Spruce == true && this.BS07a == true){
             THREE.Cache.clear();
+            treeID = "Blue_Spruce_BS07a";
             initObject("../models/Blue Spruce.obj","../models/Scotch Pine.obj");
         }
     }

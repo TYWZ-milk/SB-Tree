@@ -85,6 +85,7 @@ function topologyTree(tree1,tree2){
             row++;
         }
     }
+    alert("存储完成");
     //console.log(reusenumber);
 }
 var content="";
@@ -103,7 +104,7 @@ function toMongo(blendtree,total){
         }
     }
     $.post("http://127.0.0.1:9091/postTreeModel",{
-        "treeID" : "Blue Spruce_BS07a_update",
+        "treeID" : treeID,
         "treeData" : content
     },function(result){
         if(result == "1"){
