@@ -45,7 +45,7 @@ function topologyTree(tree1,tree2){
             compact(blendtree);
             //addLeaf(blendtree);
             drawTree(blendtree);
-            //toMongo(blendtree,total);
+            toMongo(blendtree,total);
             ptree1 = blendtree;
 
             moveTree(tree, col, row);
